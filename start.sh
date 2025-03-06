@@ -1,0 +1,1 @@
+python main.py --config configs/msrvtt_retrieval/msrvtt_retrieval_vip_base_32.json
