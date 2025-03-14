@@ -17,11 +17,11 @@ OUTPUT_PATH = "output/features.npy"
 cfg = shared_configs.get_pretraining_args()
 
 if "patch32" in cfg.clip_config:
-    cfg.max_img_size = 224  # ViT-B/32 (7x7=49 patch size)
+    cfg.max_img_size = 224  # ViT-B/32
 elif "patch16" in cfg.clip_config:
-    cfg.max_img_size = 384  # ViT-B/16 (14x14=196 패치 크기)
+    cfg.max_img_size = 384  # ViT-B/16
 else:
-    cfg.max_img_size = 448  # default (origin repo)
+    cfg.max_img_size = 448  # default
 print(f"🔹 Using max_img_size: {cfg.max_img_size}")
 
 if not os.path.exists(MODEL_PATH):
@@ -52,7 +52,9 @@ def setup_model(cfg, device=None):
 def extract_frames(video_path, num_frames=cfg.num_frm):
     cap = cv2.VideoCapture(video_path)
     frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-    selected_frames = np.linspace(0, frame_count - 1, num_frames).astype(int)
+    frame_step = frame_count // (num_frames - 1)
+    selected_frames = np.arange(0, frame_count, frame_step)
+    # selected_frames = np.linspace(0, frame_count - 1, num_frames).astype(int)
 
     frames = []
     for idx in selected_frames:
