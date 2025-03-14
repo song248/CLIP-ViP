@@ -65,9 +65,10 @@ def extract_frames(video_path, num_frames=cfg.num_frm):
     return frames
 
 def preprocess_frames(frames, image_size=cfg.max_img_size):
+    frames = [cv2.resize(x, (image_size, image_size)) for x in frames]
     transform = transforms.Compose([
         transforms.ToPILImage(),
-        transforms.Resize((image_size, image_size)),
+        # transforms.Resize((image_size, image_size)),
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.481, 0.457, 0.408], std=[0.268, 0.261, 0.275])
     ])
